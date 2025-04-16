@@ -1,6 +1,15 @@
-# API RESTful - Sistema de Gestión Académica
+# Sistema de Gestión Académica - Escuela David Urosa
 
-Esta documentación describe los endpoints RESTful disponibles para el sistema de gestión académica de la Escuela David Urosa.
+Este proyecto es un sistema completo de gestión académica desarrollado para la Escuela David Urosa. Permite administrar academias, cursos, estudiantes, matrículas, pagos y comunicados a través de una interfaz web y una API RESTful.
+
+## Características
+
+- Gestión de academias y cursos
+- Registro y seguimiento de estudiantes
+- Proceso de matrícula e inscripción
+- Sistema de pagos y control financiero
+- Envío de comunicados a padres
+- API RESTful completa para integración con otros sistemas
 
 ## Autenticación
 
@@ -449,6 +458,106 @@ DELETE /api/comunicados/{id}
 ```
 GET /api/padres/{padre_id}/comunicados
 ```
+
+## Instalación
+
+### Requisitos previos
+
+- PHP 8.1 o superior
+- Composer
+- MySQL o PostgreSQL
+- Node.js y npm
+
+### Pasos para la instalación
+
+1. **Clonar el repositorio**
+
+```bash
+git clone https://github.com/tu-usuario/matricula-escuela-david-urosa.git
+cd matricula-escuela-david-urosa
+```
+
+2. **Instalar dependencias de PHP**
+
+```bash
+composer install
+```
+
+3. **Copiar el archivo de entorno**
+
+```bash
+cp .env.example .env
+```
+
+4. **Configurar el archivo .env**
+
+Edita el archivo `.env` y configura la conexión a la base de datos y otras variables de entorno necesarias:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nombre_de_tu_base_de_datos
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+```
+
+5. **Generar la clave de la aplicación**
+
+```bash
+php artisan key:generate
+```
+
+6. **Ejecutar las migraciones**
+
+```bash
+php artisan migrate
+```
+
+7. **Ejecutar los seeders (opcional)**
+
+```bash
+php artisan db:seed
+```
+
+8. **Instalar dependencias de JavaScript**
+
+```bash
+npm install
+```
+
+## Ejecución
+
+### Iniciar el servidor de desarrollo
+
+```bash
+php artisan serve
+```
+
+### Compilar assets (en modo desarrollo)
+
+```bash
+npm run dev
+```
+
+### Compilar assets (para producción)
+
+```bash
+npm run build
+```
+
+## Prueba de la API
+
+Puedes probar la API utilizando la herramienta incluida en el proyecto:
+
+```
+http://localhost:8000/test-api.html
+```
+
+Esta herramienta te permite:
+- Registrar usuarios
+- Iniciar sesión y obtener tokens
+- Probar todos los endpoints de la API
 
 ## Códigos de Estado HTTP
 
