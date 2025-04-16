@@ -37,6 +37,7 @@ class MatriculaForm extends Component
     // Step 3: Payment information
     public $metodo_pago = 'efectivo';
     public $referencia_pago;
+    public $monto_inicial;
     
     // Step 4: Confirmation
     public $fecha_inicio;
@@ -62,6 +63,7 @@ class MatriculaForm extends Component
         // Step 3
         'metodo_pago' => 'required|in:efectivo,transferencia',
         'referencia_pago' => 'required_if:metodo_pago,transferencia',
+        'monto_inicial' => 'required|numeric|min:0',
         
         // Step 4
         'fecha_inicio' => 'required|date|after_or_equal:today',
@@ -108,6 +110,7 @@ class MatriculaForm extends Component
             $this->validate([
                 'metodo_pago' => 'required|in:efectivo,transferencia',
                 'referencia_pago' => 'required_if:metodo_pago,transferencia',
+                'monto_inicial' => 'required|numeric|min:0',
             ]);
         }
         
@@ -163,18 +166,23 @@ class MatriculaForm extends Component
             // Create payment record
             $curso = Curso::find($this->curso_id);
             
+            // Usar el monto inicial especificado o el costo total del curso si no se especifica
+            $monto_a_pagar = $this->monto_inicial ?: $curso->costo;
+            
             Pago::create([
                 'matricula_id' => $matricula->id,
-                'monto' => $curso->costo,
+                'monto' => $monto_a_pagar,
                 'metodo' => $this->metodo_pago,
                 'fecha' => now()->format('Y-m-d')
             ]);
             
             DB::commit();
             
-            // Reset form
+            // Reset form - limpiar todos los campos
             $this->reset([
                 'currentStep',
+                'academia_id',
+                'curso_id',
                 'estudiante_nombre',
                 'estudiante_apellido',
                 'estudiante_fecha_nacimiento',
@@ -186,7 +194,10 @@ class MatriculaForm extends Component
                 'padre_telefono',
                 'usar_padre_existente',
                 'metodo_pago',
-                'referencia_pago'
+                'referencia_pago',
+                'monto_inicial',
+                'fecha_inicio',
+                'estado'
             ]);
             
             $this->currentStep = 1;
