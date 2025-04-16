@@ -69,9 +69,13 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Las credenciales proporcionadas son incorrectas.'],
-            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Las credenciales proporcionadas son incorrectas.',
+                'errors' => [
+                    'email' => ['Las credenciales proporcionadas son incorrectas.']
+                ]
+            ], 401);
         }
 
         $deviceName = $request->device_name ?? $request->ip();

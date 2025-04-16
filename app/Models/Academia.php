@@ -9,7 +9,10 @@ class Academia extends Model
 {
     protected $fillable = [
         'nombre',
-        'descripcion'
+        'descripcion',
+        'direccion',
+        'telefono',
+        'email'
     ];
 
     public function cursos(): HasMany

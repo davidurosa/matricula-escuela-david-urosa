@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de API - Escuela David Urosa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .response-container {
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #3490dc;
+            border-color: #3490dc;
+        }
+        .btn-primary:hover {
+            background-color: #2779bd;
+            border-color: #2779bd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Prueba de API - Escuela David Urosa</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Registro de Usuario</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label for="registerName" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="registerName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="registerEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerPassword" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="registerPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerPasswordConfirmation" class="form-label">Confirmar Contraseña</label>
+                                <input type="password" class="form-control" id="registerPasswordConfirmation" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </form>
+                        <div class="response-container">
+                            <h6>Respuesta:</h6>
+                            <pre id="registerResponse"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Iniciar Sesión</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="loginEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="loginPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                        </form>
+                        <div class="response-container">
+                            <h6>Respuesta:</h6>
+                            <pre id="loginResponse"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Probar Endpoints Protegidos</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="apiToken" class="form-label">Token de API</label>
+                    <input type="text" class="form-control" id="apiToken" placeholder="Pega tu token aquí">
+                </div>
+                <div class="mb-3">
+                    <label for="endpointUrl" class="form-label">URL del Endpoint</label>
+                    <input type="text" class="form-control" id="endpointUrl" value="/api/academias" placeholder="Ejemplo: /api/academias">
+                </div>
+                <div class="mb-3">
+                    <label for="requestMethod" class="form-label">Método</label>
+                    <select class="form-select" id="requestMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="requestBody" class="form-label">Cuerpo de la Solicitud (JSON)</label>
+                    <textarea class="form-control" id="requestBody" rows="5" placeholder='{"nombre": "Academia de Música", "descripcion": "Clases de música para todas las edades"}'></textarea>
+                </div>
+                <button id="sendRequest" class="btn btn-success">Enviar Solicitud</button>
+                
+                <div class="response-container">
+                    <h6>Respuesta:</h6>
+                    <pre id="apiResponse"></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Endpoints Disponibles</h5>
+            </div>
+            <div class="card-body">
+                <h6>Autenticación:</h6>
+                <ul>
+                    <li><code>POST /api/auth/register</code> - Registrar un nuevo usuario</li>
+                    <li><code>POST /api/auth/login</code> - Iniciar sesión y obtener token</li>
+                    <li><code>POST /api/auth/logout</code> - Cerrar sesión (requiere token)</li>
+                </ul>
+                
+                <h6>Academias:</h6>
+                <ul>
+                    <li><code>GET /api/academias</code> - Listar todas las academias</li>
+                    <li><code>GET /api/academias/{id}</code> - Ver detalles de una academia</li>
+                    <li><code>POST /api/academias</code> - Crear una nueva academia</li>
+                    <li><code>PUT /api/academias/{id}</code> - Actualizar una academia</li>
+                    <li><code>DELETE /api/academias/{id}</code> - Eliminar una academia</li>
+                </ul>
+                
+                <h6>Cursos:</h6>
+                <ul>
+                    <li><code>GET /api/cursos</code> - Listar todos los cursos</li>
+                    <li><code>GET /api/cursos/{id}</code> - Ver detalles de un curso</li>
+                    <li><code>POST /api/cursos</code> - Crear un nuevo curso</li>
+                    <li><code>PUT /api/cursos/{id}</code> - Actualizar un curso</li>
+                    <li><code>DELETE /api/cursos/{id}</code> - Eliminar un curso</li>
+                </ul>
+                
+                <h6>Estudiantes:</h6>
+                <ul>
+                    <li><code>GET /api/estudiantes</code> - Listar todos los estudiantes</li>
+                    <li><code>GET /api/estudiantes/{id}</code> - Ver detalles de un estudiante</li>
+                    <li><code>POST /api/estudiantes</code> - Crear un nuevo estudiante</li>
+                    <li><code>PUT /api/estudiantes/{id}</code> - Actualizar un estudiante</li>
+                    <li><code>DELETE /api/estudiantes/{id}</code> - Eliminar un estudiante</li>
+                </ul>
+                
+                <h6>Matrículas:</h6>
+                <ul>
+                    <li><code>GET /api/matriculas</code> - Listar todas las matrículas</li>
+                    <li><code>GET /api/matriculas/{id}</code> - Ver detalles de una matrícula</li>
+                    <li><code>POST /api/matriculas</code> - Crear una nueva matrícula</li>
+                    <li><code>PUT /api/matriculas/{id}</code> - Actualizar una matrícula</li>
+                    <li><code>DELETE /api/matriculas/{id}</code> - Eliminar una matrícula</li>
+                </ul>
+                
+                <h6>Pagos:</h6>
+                <ul>
+                    <li><code>GET /api/pagos</code> - Listar todos los pagos</li>
+                    <li><code>GET /api/pagos/{id}</code> - Ver detalles de un pago</li>
+                    <li><code>POST /api/pagos</code> - Crear un nuevo pago</li>
+                    <li><code>PUT /api/pagos/{id}</code> - Actualizar un pago</li>
+                    <li><code>DELETE /api/pagos/{id}</code> - Eliminar un pago</li>
+                    <li><code>GET /api/matriculas/{matricula}/pagos/resumen</code> - Obtener resumen de pagos por matrícula</li>
+                </ul>
+                
+                <h6>Comunicados:</h6>
+                <ul>
+                    <li><code>GET /api/comunicados</code> - Listar todos los comunicados</li>
+                    <li><code>GET /api/comunicados/{id}</code> - Ver detalles de un comunicado</li>
+                    <li><code>POST /api/comunicados</code> - Crear un nuevo comunicado</li>
+                    <li><code>DELETE /api/comunicados/{id}</code> - Eliminar un comunicado</li>
+                    <li><code>GET /api/padres/{padre}/comunicados</code> - Obtener comunicados por padre</li>
+                </ul>
+                
+                <h6>Rutas Públicas (para pruebas):</h6>
+                <ul>
+                    <li><code>GET /api/academias/publicas</code> - Listar academias (sin autenticación)</li>
+                    <li><code>GET /api/cursos/publicos</code> - Listar cursos (sin autenticación)</li>
+                    <li><code>GET /api/prueba</code> - Ruta de prueba</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para formatear JSON
+            function formatJSON(json) {
+                try {
+                    return JSON.stringify(JSON.parse(json), null, 2);
+                } catch (e) {
+                    return json;
+                }
+            }
+            
+            // Registro de usuario
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const password_confirmation = document.getElementById('registerPasswordConfirmation').value;
+                
+                fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                        password_confirmation
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('registerResponse').textContent = formatJSON(data);
+                })
+                .catch(error => {
+                    document.getElementById('registerResponse').textContent = 'Error: ' + error.message;
+                });
+            });
+            
+            // Inicio de sesión
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('loginResponse').textContent = formatJSON(data);
+                    
+                    // Extraer el token si la respuesta es exitosa
+                    try {
+                        const responseData = JSON.parse(data);
+                        if (responseData.token) {
+                            document.getElementById('apiToken').value = responseData.token;
+                        }
+                    } catch (e) {
+                        // Ignorar errores de parsing
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loginResponse').textContent = 'Error: ' + error.message;
+                });
+            });
+            
+            // Enviar solicitud a endpoint protegido
+            document.getElementById('sendRequest').addEventListener('click', function() {
+                const token = document.getElementById('apiToken').value;
+                const url = document.getElementById('endpointUrl').value;
+                const method = document.getElementById('requestMethod').value;
+                const body = document.getElementById('requestBody').value;
+                
+                if (!token) {
+                    document.getElementById('apiResponse').textContent = 'Error: Se requiere un token de API';
+                    return;
+                }
+                
+                const options = {
+                    method: method,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                };
+                
+                if (method !== 'GET' && body.trim() !== '') {
+                    try {
+                        options.body = JSON.stringify(JSON.parse(body));
+                    } catch (e) {
+                        document.getElementById('apiResponse').textContent = 'Error: JSON inválido en el cuerpo de la solicitud';
+                        return;
+                    }
+                }
+                
+                // Asegurarse de que la URL comience con /api/
+                const fullUrl = url.startsWith('/') ? url : '/' + url;
+                
+                fetch(fullUrl, options)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('apiResponse').textContent = formatJSON(data);
+                })
+                .catch(error => {
+                    document.getElementById('apiResponse').textContent = 'Error: ' + error.message;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

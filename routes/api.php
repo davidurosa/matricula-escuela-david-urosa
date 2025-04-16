@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
 // Rutas protegidas con autenticación
 Route::middleware('auth:sanctum')->group(function () {
     
@@ -57,5 +59,13 @@ Route::post('auth/login', [AuthController::class, 'login']);
 // Ruta para cerrar sesión (protegida)
 Route::middleware('auth:sanctum')->post('auth/logout', [AuthController::class, 'logout']);
 
-// Otras rutas públicas (si se requieren)
-// Route::get('cursos/publicos', [CursoController::class, 'cursosPublicos']);
+// Rutas públicas para pruebas
+Route::get('academias/publicas', [AcademiaController::class, 'index']);
+Route::get('cursos/publicos', [CursoController::class, 'index']);
+
+Route::get('prueba', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'message' => 'Ruta de prueba'
+    ]);
+});
